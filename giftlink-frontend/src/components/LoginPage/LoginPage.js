@@ -1,14 +1,51 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
+import { urlConfig } from "../../config";
+import { useAppContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showerr, setShowerr] = useState('');
+
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useAppContext();
 
   const handleLogin = async () => {
-    console.log("Inside handleLogin");
-    console.log(email, password);
+    try {
+      setShowerr('');
+
+      const response = await fetch(`${urlConfig.backendUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const json = await response.json();
+
+      if (response.ok && json.authtoken) {
+        sessionStorage.setItem('auth-token', json.authtoken);
+        sessionStorage.setItem('name', json.userName);
+        sessionStorage.setItem('email', json.userEmail);
+
+        setIsLoggedIn(true);
+        navigate('/app');
+        return;
+      }
+
+      setPassword('');
+      setShowerr(json.error || json.message || 'Login failed');
+    } catch (e) {
+      console.log("Error fetching details: " + e.message);
+      setPassword('');
+      setShowerr('Something went wrong');
+    }
   };
 
   return (
@@ -19,7 +56,6 @@ function LoginPage() {
 
             <h2 className="text-center mb-4 font-weight-bold">Login</h2>
 
-            {/* Email */}
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email</label>
               <input
@@ -30,9 +66,9 @@ function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              <div className="text-danger">{showerr}</div>
             </div>
 
-            {/* Password */}
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
               <input

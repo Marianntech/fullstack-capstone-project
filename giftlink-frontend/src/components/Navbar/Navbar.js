@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AuthContext';
 
 export default function Navbar() {
-
     const { isLoggedIn, setIsLoggedIn, userName, setUserName } = useAppContext();
     const navigate = useNavigate();
 
@@ -38,7 +37,6 @@ export default function Navbar() {
 
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
-
                     <li className="nav-item">
                         <Link className="nav-link" to="/">Home</Link>
                     </li>
@@ -50,16 +48,17 @@ export default function Navbar() {
                     <li className="nav-item">
                         <Link className="nav-link" to="/app/search">Search</Link>
                     </li>
-
                 </ul>
 
-                {/* RIGHT SIDE AUTH */}
                 <ul className="navbar-nav ml-auto">
-
                     {isLoggedIn ? (
                         <>
                             <li className="nav-item">
-                                <span className="nav-link">
+                                <span
+                                    className="nav-link"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => navigate('/app/profile')}
+                                >
                                     Welcome, {userName}
                                 </span>
                             </li>
@@ -88,7 +87,6 @@ export default function Navbar() {
                             </li>
                         </>
                     )}
-
                 </ul>
             </div>
         </nav>
