@@ -8,7 +8,6 @@ const connectToDatabase = require('./models/db');
 const {loadData} = require("./util/import-mongo/index");
 const authRoutes = require('./routes/authRoutes');
 
-
 const app = express();
 app.use("*",cors());
 const port = 3060;
@@ -19,7 +18,6 @@ connectToDatabase().then(() => {
 })
     .catch((e) => console.error('Failed to connect to DB', e));
 
-
 app.use(express.json());
 
 // Route files
@@ -28,7 +26,6 @@ const giftRoutes = require('./routes/giftRoutes');
 
 // Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
 const searchRoutes = require('./routes/searchRoutes');
-
 
 const pinoHttp = require('pino-http');
 const logger = require('./logger');
@@ -51,8 +48,8 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/",(req,res)=>{
-    res.send("Inside the server")
-})
+    res.send("Inside the server");
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
