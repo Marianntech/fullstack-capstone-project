@@ -31,16 +31,6 @@ function MainPage() {
 
       };
 
-    // Task 3: Format timestamp
-    const formatDate = (timestamp) => {
-        const date = new Date(timestamp * 1000);
-        return date.toLocaleDateString('default', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
-        });
-      };
-
     const getConditionClass = (condition) => {
         return condition === "New" ? "list-group-item-success" : "list-group-item-warning";
     };
